@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="TOGGLE_PETMASTER" header="PETMASTER" category="ADDONS">
+		PetMaster:ToggleFrame();
+	</Binding>
+</Bindings>
