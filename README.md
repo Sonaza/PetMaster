@@ -1,5 +1,5 @@
 # PetMaster
-Simple helper addon for hunters to help pet management in World of Warcraft.
+Simple addon for hunters to help with pet management in World of Warcraft.
 
 ## Description
 Tired of fiddly flyout menus to call your pets? Simply not enough key bindings for all the cuddly death machines? Don't want to name your pets Crit and Battle Ress but are forgetting which one gave that buff or had that ability? Introducing PetMaster, the new favorite of every hunter.
