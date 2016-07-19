@@ -1,9 +1,9 @@
-## Interface: 60200
+## Interface: 70000
 ## Title: PetMaster
 ## Notes: Helper for pet tamers
 ## Author: Sonaza
-## Version: 1.0.1
-## SavedVariablesPerCharacter: PetMaster_KeybindAlert
+## Version: 2.0.0
+## SavedVariablesPerCharacter: PetMaster_KeybindAlert, PetMasterLastPet
 ## OptionalDeps: Ace3
 
 #@no-lib-strip@

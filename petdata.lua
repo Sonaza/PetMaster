@@ -6,20 +6,6 @@
 local ADDON_NAME, SHARED_DATA = ...;
 local A, E, D = unpack(SHARED_DATA);
 
--- Some buff category data
-E.BUFF = {
-	STATS 			= RAID_BUFF_1, -- Stats
-	STAMINA 		= RAID_BUFF_2, -- Stamina
-	ATTACK_POWER	= RAID_BUFF_3, -- Attack Power
-	HASTE			= RAID_BUFF_4, -- Haste
-	SPELL_POWER		= RAID_BUFF_5, -- Spell Power
-	CRIT			= RAID_BUFF_6, -- Critical Strike
-	MASTERY			= RAID_BUFF_7, -- Mastery
-	MULTISTRIKE		= RAID_BUFF_8, -- Multistrike
-	VERSATILITY		= RAID_BUFF_9, -- Versatility
-};
-local BUFF = E.BUFF;
-
 local burstHasteName = "";
 if(UnitFactionGroup("player") == "Horde") then burstHasteName = "Bloodlust" end
 if(UnitFactionGroup("player") == "Alliance") then burstHasteName = "Heroism" end
@@ -38,168 +24,101 @@ E.ABILITY = {
 local ABILITY = E.ABILITY;
 
 D.PetFamilies = {
-	["Basilisk"] = {
-		
-	},
-	["Bat"] = {
-		buffs = { BUFF.MULTISTRIKE, },
-	},
-	["Bear"] = {
-		buffs = { BUFF.STAMINA, },
-	},
-	["Beetle"] = {
-		
-	},
-	["Bird of Prey"] = {
-		buffs = { BUFF.VERSATILITY, },
-	},
-	["Boar"] = {
-		buffs = { BUFF.VERSATILITY, },
-	},
-	["Carrion Bird"] = {
+	["Basilisk"]        = {},
+	["Bat"]             = {},
+	["Bear"]            = {},
+	["Beetle"]          = {},
+	["Bird of Prey"]    = {},
+	["Boar"]            = {},
+	["Carrion Bird"]    = {
 		abilities = { ABILITY.MORTAL_WOUNDS, },
 	},
-	["Cat"] = {
-		buffs = { BUFF.MASTERY, },
-	},
-	["Crab"] = {
-		
-	},
-	["Crane"] = {
+	["Cat"]             = {},
+	["Crab"]            = {},
+	["Crane"]           = {
 		abilities = { ABILITY.COMBAT_RESS, },
 	},
-	["Crocolisk"] = {
+	["Crocolisk"]       = {
 		abilities = { ABILITY.MORTAL_WOUNDS, },
 	},
-	["Direhorn"] = {
+	["Direhorn"]        = {
 		abilities = { ABILITY.SPELL_REFLECT, },
 	},
-	["Dog"] = {
-		buffs = { BUFF.STATS, },
-	},
-	["Dragonhawk"] = {
-		buffs = { BUFF.MULTISTRIKE, },
-	},
-	["Fox"] = {
-		
-	},
-	["Goat"] = {
-		buffs = { BUFF.STAMINA, },
-	},
-	["Gorilla"] = {
-		buffs = { BUFF.STATS, },
-	},
-	["Hydra"] = {
-		buffs = { BUFF.MASTERY, },
-	},
-	["Hyena"] = {
-		buffs = { BUFF.HASTE, },
-	},
-	["Monkey"] = {
-		
-	},
-	["Moth"] = {
+	["Dog"]             = {},
+	["Dragonhawk"]      = {},
+	["Fox"]             = {},
+	["Goat"]            = {},
+	["Gorilla"]         = {},
+	["Hydra"]           = {},
+	["Hyena"]           = {},
+	["Monkey"]          = {},
+	["Moth"]            = {
 		abilities = { ABILITY.COMBAT_RESS, },
 	},
-	["Nether Ray"] = {
+	["Nether Ray"]      = {
 		abilities = { ABILITY.BURST_HASTE, },
 	},
-	["Porcupine"] = {
-		buffs = { BUFF.VERSATILITY, },
-	},
-	["Raptor"] = {
-		buffs = { BUFF.CRIT, },
-	},
-	["Ravager"] = {
-		buffs = { BUFF.VERSATILITY, },
-	},
-	["Riverbeast"] = {
+	["Porcupine"]       = {},
+	["Raptor"]          = {},
+	["Ravager"]         = {},
+	["Riverbeast"]      = {
 		abilities = { ABILITY.MORTAL_WOUNDS, },
 	},
-	["Scorpid"] = {
+	["Scorpid"]         = {
 		abilities = { ABILITY.MORTAL_WOUNDS, },
 	},
-	["Serpent"] = {
-		buffs = { BUFF.SPELL_POWER, },
-	},
-	["Spider"] = {
-		
-	},
-	["Sporebat"] = {
-		buffs = { BUFF.HASTE, },
-	},
-	["Stag"] = {
-		buffs = { BUFF.VERSATILITY, },
-	},
-	["Tallstrider"] = {
-		buffs = { BUFF.MASTERY, },
-	},
-	["Turtle"] = {
-		
-	},
-	["Warp Stalker"] = {
-		
-	},
-	["Wasp"] = {
-		buffs = { BUFF.HASTE, },
-	},
-	["Wind Serpent"] = {
-		buffs = { BUFF.MULTISTRIKE, },
-	},
-	["Wolf"] = {
-		buffs = { BUFF.CRIT, },
-	},
+	["Serpent"]         = {},
+	["Spider"]          = {},
+	["Sporebat"]        = {},
+	["Stag"]            = {},
+	["Tallstrider"]     = {},
+	["Turtle"]          = {},
+	["Warp Stalker"]    = {},
+	["Wasp"]            = {},
+	["Wind Serpent"]    = {},
+	["Wolf"]            = {
+		abilities = { ABILITY.SPELL_REFLECT, ABILITY.MORTAL_WOUNDS, },
+		},
 	
 	---------------------------------------------------
 	-- Exotic pets
 	
 	["Chimaera"] = {
-		buffs = { BUFF.MULTISTRIKE, },
 		exotic = true,
 	},
 	["Core Hound"] = {
-		buffs = { BUFF.MULTISTRIKE, },
 		abilities = { ABILITY.BURST_HASTE, },
 		exotic = true,
 	},
 	["Clefthoof"] = {
-		buffs = { BUFF.MULTISTRIKE, BUFF.VERSATILITY, },
 		exotic = true,
 	},
 	["Devilsaur"] = {
-		buffs = { BUFF.CRIT, },
 		abilities = { ABILITY.MORTAL_WOUNDS, },
 		exotic = true,
 	},
 	["Quilen"] = {
-		buffs = { BUFF.CRIT, },
 		abilities = { ABILITY.COMBAT_RESS, },
 		exotic = true,
 	},
 	["Rylak"] = {
-		buffs = { BUFF.STAMINA, BUFF.HASTE, },
 		exotic = true,
 	},
 	["Shale Spider"] = {
-		buffs = { BUFF.STATS, BUFF.CRIT, },
 		exotic = true,
 	},
 	["Silithid"] = {
-		buffs = { BUFF.STAMINA, BUFF.SPELL_POWER, },
 		exotic = true,
 	},
 	["Spirit Beast"] = {
-		buffs = { BUFF.CRIT, BUFF.MASTERY, },
 		abilities = { ABILITY.SPIRIT_MEND, },
 		exotic = true,
 	},
 	["Water Strider"] = {
-		buffs = { BUFF.SPELL_POWER, BUFF.CRIT, },
 		abilities = { ABILITY.WATER_WALK, },
 		exotic = true,
 	},
 	["Worm"] = {
-		buffs = { BUFF.STATS, BUFF.VERSATILITY, },
 		exotic = true,
 	},
 };
@@ -243,11 +162,7 @@ function A:GetTamedPetInfo()
 	for index = 1, numSlots do
 		local petIcon, petName, petLevel, petType, petTalents = GetStablePetInfo(index);
 		
-		if(petType ~= nil and not D.PetFamilies[petType]) then
-			print("Pet family info missing", petType)
-		end
-		
-		if(petIcon) then
+		if(petIcon and D.PetFamilies[petType]) then
 			local isStabled = (index > 5);
 			
 			tinsert(pets, {

@@ -37,6 +37,8 @@ StaticPopupDialogs["PETMASTER_NO_KEYBIND"] = {
 	timeout = 0,
 }
 
+PETMASTER_SEARCH_DEFAULT = "Search for Name, Type or Abilities";
+
 local MESSAGE_PATTERN = "|cffe8608fPetMaster|r %s";
 function A:AddMessage(pattern, ...)
 	DEFAULT_CHAT_FRAME:AddMessage(MESSAGE_PATTERN:format(string.format(pattern, ...)));
@@ -57,6 +59,10 @@ function A:OnEnable()
 		A:RegisterEvent("PLAYER_REGEN_DISABLED");
 		A:RegisterEvent("PET_STABLE_SHOW", "PET_STABLE_UPDATE");
 		A:RegisterEvent("PET_STABLE_UPDATE");
+	
+		if(not PetMasterLastPet) then
+			PetMasterLastPet = "";
+		end
 		
 		if(not A:IsBindingSet() and not PetMasterKeybindAlert) then
 			StaticPopup_Show("PETMASTER_NO_KEYBIND");
@@ -80,8 +86,11 @@ function A:PLAYER_REGEN_DISABLED()
 end
 
 function A:ResetFrame()
-	PetMasterFrameSearch:SetText("");
-	PetMasterFrameSpellInfo:SetText("Search for Name, Type, Buffs or Abilities");
+	local prefill = PetMasterLastPet or "";
+	PetMasterFrameSearch:SetText(prefill);
+	PetMasterFrameSearch:HighlightText(0, strlen(prefill));
+	
+	PetMasterFrameSpellInfo:SetText(PETMASTER_SEARCH_DEFAULT);
 	PetMasterFrameSearchInfo:SetText("");
 	A.HasMatches = false;
 end
@@ -99,14 +108,7 @@ end
 
 function A:OpenFrame()
 	if(PLAYER_CLASS ~= "HUNTER") then return end
-	
 	if(PetMasterFrame:IsShown()) then return end
-	
-	-- if(not A.CurrentBinding) then
-		-- A.CurrentBinding = GetBindingAction("ENTER");
-		-- SetBinding("ENTER", "CLICK PetMasterFrameSpellButton:LeftButton");
-		-- SetOverrideBindingClick(PetMasterFrameSearch, true, "ENTER", "PetMasterFrameSpellButton", "LeftButton");
-	-- end
 	
 	A:ResetFrame();
 	PetMasterFrame:Show();
@@ -144,10 +146,6 @@ function A:GetMatchString(data)
 		matchString = string.format("%s exotic", matchString);
 	end
 	
-	if(data.info.buffs) then
-		matchString = string.format("%s %s", matchString, table.concat(data.info.buffs, " "));
-	end
-	
 	if(data.info.abilities) then
 		for _, abilities in ipairs(data.info.abilities) do
 			matchString = string.format("%s %s", matchString, table.concat(abilities, " "));
@@ -162,7 +160,7 @@ function A:UpdateSearch(searchText)
 	
 	if(strlen(searchText) == 0) then
 		PetMasterFrameSpellName:SetText("Enter Pet Info");
-		PetMasterFrameSpellInfo:SetText("Search for Name, Type, Buffs or Abilities");
+		PetMasterFrameSpellInfo:SetText(PETMASTER_SEARCH_DEFAULT);
 		PetMasterFrameSearchInfo:SetText("");
 		PetMasterFrameSpellButton:Hide();
 		return;
@@ -192,27 +190,6 @@ function A:UpdateSearch(searchText)
 	local pets = A:GetTamedPetInfo();
 	
 	for _, data in pairs(pets) do
-		-- local matchFound = false;
-		-- matchFound = matchFound or A:TokenMatch(data.name, searchText);
-		-- matchFound = matchFound or A:TokenMatch(data.type, searchText);
-		
-		-- if(data.info.buffs and not matchFound) then
-		-- 	for _, buffType in ipairs(data.info.buffs) do
-		-- 		matchFound = matchFound or A:TokenMatch(buffType, searchText);
-		-- 		if(matchFound) then break end
-		-- 	end
-		-- end
-		
-		-- if(data.info.abilities and not matchFound) then
-		-- 	for _, abilities in ipairs(data.info.abilities) do
-		-- 		for _, ability in ipairs(abilities) do
-		-- 			matchFound = matchFound or A:TokenMatch(ability, searchText);
-		-- 			if(matchFound) then break end
-		-- 		end
-		-- 		if(matchFound) then break end
-		-- 	end
-		-- end
-		
 		local matchString = A:GetMatchString(data);
 		local matchFound = A:TokenMatchAll(matchString, searchText);
 		
@@ -247,7 +224,7 @@ function A:UpdateSearch(searchText)
 	A.HasMatches = false;
 	
 	PetMasterFrameSpellName:SetText("No Result");
-	PetMasterFrameSpellInfo:SetText("Search for Name, Type, Buffs and Abilities");
+	PetMasterFrameSpellInfo:SetText(PETMASTER_SEARCH_DEFAULT);
 	PetMasterFrameSearchInfo:SetText("");
 	PetMasterFrameSpellButton:Hide();
 	
@@ -388,6 +365,8 @@ function PetMaster_OnEnterPressed(self)
 	if(not A.CurrentBinding) then
 		A.CurrentBinding = GetBindingAction("ENTER");
 		SetBinding("ENTER", "CLICK PetMasterFrameSpellButton:LeftButton");
+		
+		PetMasterLastPet = strtrim(self:GetText());
 	end
 	
 	PetMasterFrameSearch:Hide();
