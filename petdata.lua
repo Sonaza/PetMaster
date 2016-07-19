@@ -76,9 +76,7 @@ D.PetFamilies = {
 	["Warp Stalker"]    = {},
 	["Wasp"]            = {},
 	["Wind Serpent"]    = {},
-	["Wolf"]            = {
-		abilities = { ABILITY.SPELL_REFLECT, ABILITY.MORTAL_WOUNDS, },
-		},
+	["Wolf"]            = {},
 	
 	---------------------------------------------------
 	-- Exotic pets

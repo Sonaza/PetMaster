@@ -256,11 +256,6 @@ function A:SetMatchedSpell(index)
 		
 		local spellInfo = {};
 		
-		-- if(data.isStabled) then
-		-- 	A.CurrentUnsummonable = true;
-		-- 	tinsert(spellInfo, );
-		-- end
-		
 		if(data.info.buffs) then
 			tinsert(spellInfo, table.concat(data.info.buffs, " "));
 		end
@@ -283,6 +278,10 @@ function A:SetMatchedSpell(index)
 			local color = canUseExotic and "98cd1d" or "ff4444";
 			
 			tinsert(spellInfo, string.format("|cff%sExotic|r", color));
+		end
+		
+		if(#spellInfo == 0) then
+			tinsert(spellInfo, "|cffc5c5c5No special abilities|r");
 		end
 		
 		PetMasterFrameSpellInfo:SetText(table.concat(spellInfo, " / "));
