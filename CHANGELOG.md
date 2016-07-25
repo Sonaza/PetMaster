@@ -1,3 +1,6 @@
+## 2.0.2
+* Fix key bind alert error.
+
 ## 2.0.1
 * Removed debug stuff.
 * Added note about no special abilities.
