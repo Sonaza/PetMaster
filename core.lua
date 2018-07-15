@@ -23,7 +23,6 @@ StaticPopupDialogs["PETMASTER_NO_KEYBIND"] = {
 	button2 = NO,
 	button3 = "Don't Ask Again",
 	OnAccept = function(self)
-		PlaySound("igMainMenuOption");
 		KeyBindingFrame_LoadUI();
 		KeyBindingFrame.mode = 1;
 		ShowUIPanel(KeyBindingFrame);
