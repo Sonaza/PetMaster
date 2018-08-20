@@ -146,9 +146,19 @@ function A:GetMatchString(data)
 	end
 	
 	if(data.info.abilities) then
-		for _, abilities in ipairs(data.info.abilities) do
-			matchString = string.format("%s %s", matchString, table.concat(abilities, " "));
+		local abilities = {};
+		for _, ability in ipairs(data.info.abilities) do
+			tinsert(abilities, ability);
 		end
+		matchString = string.format("%s %s", matchString, table.concat(abilities, " "));
+	end
+	
+	if(data.info.buffs) then
+		local buffs = {};
+		for _, buff in ipairs(data.info.buffs) do
+			tinsert(buffs, string.format("%s| (%s| %s)|r",buff[1],buff[2],buff[3]));
+		end
+		matchString = string.format("%s %s", matchString, table.concat(buffs, " "));
 	end
 	
 	return matchString;
@@ -256,13 +266,17 @@ function A:SetMatchedSpell(index)
 		local spellInfo = {};
 		
 		if(data.info.buffs) then
-			tinsert(spellInfo, table.concat(data.info.buffs, " "));
+			local buffs = {};
+			for _, buff in ipairs(data.info.buffs) do
+				tinsert(buffs, string.format("|cffe8b133%s|r| (%s | %s) |",buff[1],buff[2],buff[3]));
+			end
+			tinsert(spellInfo, table.concat(buffs, " "));
 		end
 		
 		if(data.info.abilities) then
 			local abilities = {};
 			for _, ability in ipairs(data.info.abilities) do
-				tinsert(abilities, ability[1]);
+				tinsert(abilities, string.format("%s ", ability));
 			end
 			
 			tinsert(spellInfo, table.concat(abilities, " "));
