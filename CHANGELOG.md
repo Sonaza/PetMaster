@@ -1,3 +1,6 @@
+## 3.0.1
+* Updated pet data for Battle for Azeroth. Thanks @aqiruse (https://github.com/aqiruse) for the work.
+
 ## 3.0.0
 * Updated for Battle for Azeroth.
 

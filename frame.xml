@@ -39,20 +39,25 @@
 						<Anchor point="TOP" x="0" y="-55"/>
 					</Anchors>
 				</FontString>
+				<FontString name="$parentPetTalent" parentKey="petTalent" inherits="PetMasterFont" justifyH="CENTER" text="">
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-76"/>
+					</Anchors>
+				</FontString>
 				<FontString name="$parentSpellInfo" parentKey="searchInfo" inherits="PetMasterFont" justifyH="CENTER" text="">
 					<Anchors>
-						<Anchor point="TOP" x="0" y="-74"/>
+						<Anchor point="TOP" x="0" y="-93"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSpellConfirm" parentKey="spellConfirm" inherits="PetMasterFont" justifyH="CENTER" text="Press Enter to Cast Spell">
 					<Anchors>
-						<Anchor point="TOP" x="0" y="-90"/>
+						<Anchor point="TOP" x="0" y="-110"/>
 					</Anchors>
 					<Color r="1" g="0.8" b="0.1"/>
 				</FontString>
 				<FontString name="$parentSearchInfo" parentKey="searchInfo" inherits="PetMasterFont" justifyH="CENTER" text="TAB to Cycle">
 					<Anchors>
-						<Anchor point="TOP" x="0" y="-115"/>
+						<Anchor point="TOP" x="0" y="-135"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -98,7 +103,7 @@
 			<EditBox name="$parentSearch" inherits="SearchBoxTemplate" letters="60">
 				<Size x="170" y="20"/>
 				<Anchors>
-					<Anchor point="TOP" relativePoint="TOP" relativeTo="$parent" x="0" y="-90"/>
+					<Anchor point="TOP" relativePoint="TOP" relativeTo="$parent" x="0" y="-110"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>

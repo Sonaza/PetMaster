@@ -2,7 +2,7 @@
 ## Title: PetMaster
 ## Notes: Helper for pet tamers
 ## Author: Sonaza
-## Version: 3.0.0
+## Version: 3.0.1
 ## SavedVariablesPerCharacter: PetMasterKeybindAlert, PetMasterLastPet
 ## OptionalDeps: Ace3
 

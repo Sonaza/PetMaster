@@ -36,7 +36,7 @@ StaticPopupDialogs["PETMASTER_NO_KEYBIND"] = {
 	timeout = 0,
 }
 
-PETMASTER_SEARCH_DEFAULT = "Search for Name, Type or Abilities";
+PETMASTER_SEARCH_DEFAULT = "Search for Name, Specialization, Type or Abilities";
 
 local MESSAGE_PATTERN = "|cffe8608fPetMaster|r %s";
 function A:AddMessage(pattern, ...)
@@ -89,7 +89,8 @@ function A:ResetFrame()
 	PetMasterFrameSearch:SetText(prefill);
 	PetMasterFrameSearch:HighlightText(0, strlen(prefill));
 	
-	PetMasterFrameSpellInfo:SetText(PETMASTER_SEARCH_DEFAULT);
+	PetMasterFramePetTalent:SetText(PETMASTER_SEARCH_DEFAULT);
+	PetMasterFrameSpellInfo:SetText("");
 	PetMasterFrameSearchInfo:SetText("");
 	A.HasMatches = false;
 end
@@ -169,7 +170,8 @@ function A:UpdateSearch(searchText)
 	
 	if(strlen(searchText) == 0) then
 		PetMasterFrameSpellName:SetText("Enter Pet Info");
-		PetMasterFrameSpellInfo:SetText(PETMASTER_SEARCH_DEFAULT);
+		PetMasterFramePetTalent:SetText(PETMASTER_SEARCH_DEFAULT);
+		PetMasterFrameSpellInfo:SetText("");
 		PetMasterFrameSearchInfo:SetText("");
 		PetMasterFrameSpellButton:Hide();
 		return;
@@ -254,6 +256,17 @@ function A:SetMatchedSpell(index)
 			spellText = string.format("%s (|cffe8b133%s|r)", spellText, data.type);
 		end
 		
+		if(data.info.exotic) then
+			local canUseExotic = GetSpecialization() == 1;
+			if(not canUseExotic) then
+				A.CurrentUnsummonable = true;
+			end
+			
+			local color = canUseExotic and "98cd1d" or "ff4444";
+			
+			spellText = string.format("%s |cff%sExotic|r", spellText, color);
+		end
+		
 		if(not data.isStabled) then
 			spellText = string.format("Call %s", spellText);
 		else
@@ -263,41 +276,40 @@ function A:SetMatchedSpell(index)
 		
 		PetMasterFrameSpellName:SetText(spellText);
 		
-		local spellInfo = {};
+		local spellInfo = { };
 		
 		if(data.info.buffs) then
 			local buffs = {};
 			for _, buff in ipairs(data.info.buffs) do
-				tinsert(buffs, string.format("|cffe8b133%s|r| (%s | %s) |",buff[1],buff[2],buff[3]));
+				tinsert(buffs, string.format("|cffe8b133%s|r  %s / %s", buff[1], buff[2], buff[3]));
 			end
-			tinsert(spellInfo, table.concat(buffs, " "));
+			PetMasterFramePetTalent:SetText(table.concat(buffs, " "));
+		else
+			PetMasterFramePetTalent:SetText("Unknown specialization");
 		end
 		
 		if(data.info.abilities) then
+			local effectTemp = nil;
 			local abilities = {};
 			for _, ability in ipairs(data.info.abilities) do
-				tinsert(abilities, string.format("%s ", ability));
+				if (effectTemp == nil) then
+					effectTemp = ability;
+				else
+					tinsert(abilities, string.format("%s (|cff6eecf7%s|r)", ability, effectTemp));
+					effectTemp = nil;
+				end
 			end
-			
-			tinsert(spellInfo, table.concat(abilities, " "));
+			tinsert(spellInfo, table.concat(abilities, " / "));
 		end
 		
-		if(data.info.exotic) then
-			local canUseExotic = GetSpecialization() == 1;
-			if(not canUseExotic) then
-				A.CurrentUnsummonable = true;
-			end
-			
-			local color = canUseExotic and "98cd1d" or "ff4444";
-			
-			tinsert(spellInfo, string.format("|cff%sExotic|r", color));
-		end
-		
+		local abilities = table.concat(spellInfo, " / ");
 		if(#spellInfo == 0) then
 			tinsert(spellInfo, "|cffc5c5c5No special abilities|r");
+		else
+			abilities = "|cffe8b133Abilities|r  " .. abilities;
 		end
 		
-		PetMasterFrameSpellInfo:SetText(table.concat(spellInfo, " / "));
+		PetMasterFrameSpellInfo:SetText(abilities);
 		
 		PetMasterFrameSpellButton.icon:SetTexture(data.icon);
 		PetMasterFrameSpellButton.iconBorder:SetVertexColor(0.1, 0.1, 0.1);
@@ -382,6 +394,7 @@ function PetMaster_OnEnterPressed(self)
 	end
 	
 	PetMasterFrameSearch:Hide();
+	PetMasterFrameSearchInfo:SetText("");
 	PetMasterFrameSpellConfirm:Show();
 end
 
